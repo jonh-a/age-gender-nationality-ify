@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import axios from 'axios';
-import { Result } from '../App'
+import { Result } from './Names'
 import styled from 'styled-components'
+import { useNavigate } from "react-router-dom";
 
 const regionNames = new Intl.DisplayNames(['en'], { type: 'region' })
 
@@ -40,7 +41,13 @@ const Countries = styled.div`
   width: 80%;
 `
 
+const Country = styled.div`
+  width: 100%;
+`
+
 const Results: React.FC<Props> = ({ name, results, setResults }) => {
+  const navigate = useNavigate();
+
   const makeRequest = async (url: string) => {
     console.log('Making request...', url)
     try {
@@ -55,9 +62,9 @@ const Results: React.FC<Props> = ({ name, results, setResults }) => {
   }
 
   useEffect(() => {
-    console.log('running useEffect')
     const getNameData = async () => {
-      console.log('Getting name data')
+      navigate(`/names/${name}`)
+
       const promises = [
         makeRequest(`https://api.agify.io/?name=${name}`),
         makeRequest(`https://api.nationalize.io/?name=${name}`),
@@ -87,7 +94,7 @@ const Results: React.FC<Props> = ({ name, results, setResults }) => {
     }, 1000)
 
     return () => clearTimeout(timer)
-  }, [name, setResults])
+  }, [name, setResults, navigate])
 
   return (
     <Container>
@@ -99,7 +106,13 @@ const Results: React.FC<Props> = ({ name, results, setResults }) => {
           {results && JSON.stringify(results, null, 2)}
         </Code>
         <Countries>
-          asdf
+          {results?.nationality?.map(
+            (c: { country_id: string, probability: number }) => (
+              <Country key={c?.country_id}>
+                {c?.country_id}
+                <meter id={c?.country_id} value={c?.probability} min={0} max={1} />
+              </Country>
+            ))}
         </Countries>
       </Details>
     </Container>

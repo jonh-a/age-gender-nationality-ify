@@ -1,14 +1,7 @@
 import React, { useState } from 'react';
-import Search from './components/Search';
-import Results from './components/Results';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components'
-
-export interface Result {
-  name: string,
-  age?: number,
-  nationality?: { country_id: string, probability: number }[],
-  gender?: { gender: string, probability: number }
-}
+import Names from './components/Names';
 
 const Container = styled.div`
   width: 100%;
@@ -27,16 +20,19 @@ const Main = styled.div`
 `
 
 const App: React.FC = () => {
-  const [name, setName] = useState('');
-  const [results, setResults] = useState(null);
-
   return (
     <Container>
       <Main>
-        <Search name={name} setName={setName} />
-        <Results name={name} results={results} setResults={setResults} />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/names/:name" element={<Names />} />
+            <Route path="/names/" element={<Names />} />
+            <Route path="/" element={<Names />} />
+          </Routes>
+        </BrowserRouter>
       </Main>
     </Container>
+
   );
 }
 
