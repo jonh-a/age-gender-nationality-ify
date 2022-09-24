@@ -1,25 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import Search from './components/Search';
+import Results from './components/Results';
+import styled from 'styled-components'
 
-function App() {
+export interface Result {
+  name: string,
+  age?: number,
+  nationality?: { country_id: string, probability: number }[],
+  gender?: { gender: string, probability: number }
+}
+
+const Container = styled.div`
+  max-width: 40em;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 1em;
+  padding-bottom: 1em;
+`
+
+const App: React.FC = () => {
+  const [name, setName] = useState('');
+  const [results, setResults] = useState(null);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <Search name={name} setName={setName} />
+      <Results name={name} results={results} setResults={setResults} />
+    </Container>
   );
 }
 
