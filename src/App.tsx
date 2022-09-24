@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './App.css';
 import Search from './components/Search';
 import Results from './components/Results';
 import styled from 'styled-components'
@@ -12,11 +11,19 @@ export interface Result {
 }
 
 const Container = styled.div`
-  max-width: 40em;
+  width: 100%;
+`
+
+const Main = styled.div`
+  max-width: 42em;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 1em;
-  padding-bottom: 1em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+
+  @media screen and (max-width: 50em) {
+    width: 95%;
+  }
 `
 
 const App: React.FC = () => {
@@ -25,8 +32,10 @@ const App: React.FC = () => {
 
   return (
     <Container>
-      <Search name={name} setName={setName} />
-      <Results name={name} results={results} setResults={setResults} />
+      <Main>
+        <Search name={name} setName={setName} />
+        <Results name={name} results={results} setResults={setResults} />
+      </Main>
     </Container>
   );
 }

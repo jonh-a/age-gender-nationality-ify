@@ -11,8 +11,33 @@ interface Props {
   setResults: any,
 }
 
-const Output = styled.pre`
+const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+`
+
+const Description = styled.h3`
+  width: 100%;
+  text-align: center;
+`
+
+const Details = styled.div`
+  width: 95%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+`
+
+const Code = styled.pre`
+  width: 80%;
   text-align: left;
+`
+
+const Countries = styled.div`
+  width: 80%;
 `
 
 const Results: React.FC<Props> = ({ name, results, setResults }) => {
@@ -65,9 +90,20 @@ const Results: React.FC<Props> = ({ name, results, setResults }) => {
   }, [name, setResults])
 
   return (
-    <Output>
-      {results && JSON.stringify(results, null, 2)}
-    </Output>
+    <Container>
+      <Description>
+        {`You are a ${results?.age} year old ${results?.gender?.gender} from ${results?.nationality?.[0]?.country_id}.`}
+      </Description>
+      <Details>
+        <Code>
+          {results && JSON.stringify(results, null, 2)}
+        </Code>
+        <Countries>
+          asdf
+        </Countries>
+      </Details>
+    </Container>
+
   )
 }
 

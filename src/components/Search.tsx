@@ -6,10 +6,17 @@ interface Props {
   setName: React.Dispatch<React.SetStateAction<string>>
 }
 
-const Input = styled.input`
+const Container = styled.div`
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
+`
+
+const Input = styled.input`
+  width: 90%;
   font-size: 2em;
   padding-left: 0.5em;
   padding-right: 0.5em;
@@ -19,11 +26,13 @@ const Input = styled.input`
 
 const Search: React.FC<Props> = ({ name, setName }) => {
   return (
-    <Input
-      value={name}
-      onChange={(e) => setName(e.target.value)}
-      placeholder='Enter a first name'
-    />
+    <Container>
+      <Input
+        value={name}
+        onChange={(e) => setName(e.target.value?.toLowerCase())}
+        placeholder='Enter a first name'
+      />
+    </Container>
   )
 }
 
