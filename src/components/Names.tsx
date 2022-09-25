@@ -1,20 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Search from './Search';
 import Results from './Results';
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 export interface Result {
   name: string,
-  age?: number,
-  nationality?: { country_id: string, probability: number }[],
-  gender?: { gender: string, probability: number }
+  age: number,
+  nationality: { country_id: string, probability: number }[],
+  gender: { gender: string, probability: number }
 }
 
+export const baseResults = {
+  name: '',
+  age: 0,
+  nationality: [],
+  gender: { gender: '', probability: 0 }
+}
 
 const Names: React.FC = () => {
-
   const [name, setName] = useState(useParams()?.name || '');
-  const [results, setResults] = useState(null);
+  const [results, setResults] = useState(baseResults);
 
   return (
     <div>

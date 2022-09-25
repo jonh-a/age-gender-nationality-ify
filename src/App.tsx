@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components'
 import Names from './components/Names';
 
 const Container = styled.div`
   width: 100%;
+  height: 100vh;
+  background-color: #0d1b2a;
 `
 
 const Main = styled.div`

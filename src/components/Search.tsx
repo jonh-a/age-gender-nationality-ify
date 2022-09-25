@@ -22,6 +22,8 @@ const Input = styled.input`
   padding-right: 0.5em;
   padding-top: 0.3em;
   padding-bottom: 0.3em;
+  background-color: #1b263b;
+  color: #e0e1dd;
 `
 
 const Search: React.FC<Props> = ({ name, setName }) => {
