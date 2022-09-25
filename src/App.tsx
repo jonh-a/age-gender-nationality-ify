@@ -4,9 +4,9 @@ import styled from 'styled-components'
 import Names from './components/Names';
 
 const Container = styled.div`
+  margin-top: 0px;
   width: 100%;
-  height: 100vh;
-  background-color: #0d1b2a;
+  height: 100%;
 `
 
 const Main = styled.div`
@@ -34,7 +34,6 @@ const App: React.FC = () => {
         </BrowserRouter>
       </Main>
     </Container>
-
   );
 }
 

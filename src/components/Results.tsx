@@ -40,7 +40,7 @@ const Code = styled.pre`
 `
 
 const Category = styled.div`
-  width: 80%;
+  width: 90%;
 `
 
 const Country = styled.div`
@@ -130,9 +130,6 @@ const Results: React.FC<Props> = ({ name, results, setResults }) => {
         {loading && 'Loading...'}
       </Description>
       {isResult() && (<Details>
-        <Code>
-          {JSON.stringify(results, null, 2)}
-        </Code>
         <Category>
           <h4>Country Breakdown</h4>
           {results?.nationality?.map(

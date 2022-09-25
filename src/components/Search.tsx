@@ -23,6 +23,8 @@ const Input = styled.input`
   padding-top: 0.3em;
   padding-bottom: 0.3em;
   background-color: #1b263b;
+  box-shadow: none;
+  border: 1px solid white;
   color: #e0e1dd;
 `
 
