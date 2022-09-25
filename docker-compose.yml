@@ -1,0 +1,6 @@
+services:
+  age-gender-nationality-ify:
+    image: laundrybyte/age-gender-nationality-ify
+    ports:
+      - "3000:80"
+    restart: unless-stopped
