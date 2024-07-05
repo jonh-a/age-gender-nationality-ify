@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import { Result, baseResults } from './Names'
 import styled from 'styled-components'
 import { useNavigate } from "react-router-dom";
 import Meter from "./Meter";
+import { Result, baseResults } from './Names'
+
 
 const regionNames = new Intl.DisplayNames(['en'], { type: 'region' })
 
@@ -34,11 +35,6 @@ const Details = styled.div`
   justify-content: center;
 `
 
-const Code = styled.pre`
-  width: 80%;
-  text-align: left;
-`
-
 const Category = styled.div`
   width: 90%;
 `
@@ -65,6 +61,17 @@ const Results: React.FC<Props> = ({ name, results, setResults }) => {
   const isResult = () => {
     if (results?.name === '' || !results?.age || !results?.nationality || !results?.gender) return false
     return true
+  }
+
+  const isResultNotFound = () => {
+    if (
+      (results?.age === 0
+        || results?.nationality?.length === 0
+        || results?.gender?.gender === '')
+      && name.length > 0
+      && !loading
+    ) return true
+    return false
   }
 
   const makeRequest = async (url: string) => {
@@ -96,14 +103,14 @@ const Results: React.FC<Props> = ({ name, results, setResults }) => {
 
       const res: Result = {
         name,
-        age: responses[0]?.age,
+        age: responses[0]?.age | 0,
         nationality: responses[1]?.country?.map((c: { country_id: string, probability: number }) => ({
-          country_id: regionNames.of(c?.country_id),
-          probability: c?.probability
+          country_id: regionNames.of(c?.country_id) || 0,
+          probability: c?.probability || 0
         })),
         gender: {
-          gender: responses[2]?.gender,
-          probability: responses[2]?.probability
+          gender: responses[2]?.gender || '',
+          probability: responses[2]?.probability || 0
         }
       }
 
@@ -120,43 +127,47 @@ const Results: React.FC<Props> = ({ name, results, setResults }) => {
     setResults(baseResults);
 
     return () => clearTimeout(timer)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name])
 
   return (
     <Container>
       <Description>
-        {isResult() && `You are a ${results?.age} year old ${results?.gender?.gender} from ${results?.nationality?.[0]?.country_id}.`}
-        {loading && 'Loading...'}
+        {isResult() &&
+          `You are a ${results?.age} year old ${results?.gender?.gender} from ${results?.nationality?.[0]?.country_id}.`
+        }
+        {isResultNotFound() && `You are a totally new person who has never existed before.`}
+        {loading && 'Thinking...'}
       </Description>
-      {isResult() && (<Details>
-        <Category>
-          <h4>Country Breakdown</h4>
-          {results?.nationality?.map(
-            (c: { country_id: string, probability: number }) => (
-              <Country key={c?.country_id}>
-                <Meter
-                  text={c?.country_id}
-                  percentage={c?.probability * 100}
-                  backgroundColor='#1b263b'
-                  foregroundColor='#415a77'
-                  textColor='#e0e1dd'
-                />
-              </Country>
-            ))}
-        </Category>
+      {isResult() && (
+        <Details>
+          <Category>
+            <h4>Country Breakdown</h4>
+            {results?.nationality?.map(
+              (c: { country_id: string, probability: number }) => (
+                <Country key={c?.country_id}>
+                  <Meter
+                    text={c?.country_id}
+                    percentage={c?.probability * 100}
+                    backgroundColor='#1b263b'
+                    foregroundColor='#415a77'
+                    textColor='#e0e1dd'
+                  />
+                </Country>
+              ))}
+          </Category>
 
-        <Category>
-          <h4>Gender Breakdown</h4>
-          <Meter
-            text={results?.gender?.gender || ''}
-            percentage={results?.gender.probability * 100 || 0}
-            backgroundColor='#1b263b'
-            foregroundColor='#415a77'
-            textColor='#e0e1dd'
-          />
-        </Category>
-      </Details>)}
+          <Category>
+            <h4>Gender Breakdown</h4>
+            <Meter
+              text={results?.gender?.gender || ''}
+              percentage={results?.gender.probability * 100 || 0}
+              backgroundColor='#1b263b'
+              foregroundColor='#415a77'
+              textColor='#e0e1dd'
+            />
+          </Category>
+        </Details>
+      )}
     </Container>
 
   )

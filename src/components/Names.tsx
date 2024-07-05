@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom'
 import Search from './Search';
 import Results from './Results';
-import { useParams } from 'react-router-dom'
 
 export interface Result {
   name: string,
