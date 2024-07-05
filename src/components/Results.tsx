@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import Meter from "./Meter";
 import { Result, baseResults } from './Names'
 
-
 const regionNames = new Intl.DisplayNames(['en'], { type: 'region' })
 
 interface Props {
@@ -17,9 +16,8 @@ interface Props {
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
   color: #e0e1dd;
+  margin-bottom: auto;
 `
 
 const Description = styled.h3`
@@ -54,7 +52,8 @@ const Country = styled.div`
 `
 
 const Results: React.FC<Props> = ({ name, results, setResults }) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [rateLimited, setRateLimited] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -99,6 +98,15 @@ const Results: React.FC<Props> = ({ name, results, setResults }) => {
       ];
 
       const responses = await Promise.all(promises);
+
+      if (
+        responses[0]?.success === false
+        || responses[1]?.success === false
+        || responses[2]?.success === false
+      ) {
+        setRateLimited(true)
+      } else setRateLimited(false)
+
       setLoading(false)
 
       const res: Result = {
@@ -123,7 +131,7 @@ const Results: React.FC<Props> = ({ name, results, setResults }) => {
       getNameData()
     }, 1000)
 
-    if (name) setLoading(true);
+    if (name) setLoading(true); setRateLimited(false);
     setResults(baseResults);
 
     return () => clearTimeout(timer)
@@ -135,7 +143,8 @@ const Results: React.FC<Props> = ({ name, results, setResults }) => {
         {isResult() &&
           `You are a ${results?.age} year old ${results?.gender?.gender} from ${results?.nationality?.[0]?.country_id}.`
         }
-        {isResultNotFound() && `You are a totally new person who has never existed before.`}
+        {isResultNotFound() && !rateLimited && `You are a totally new person who has never existed before.`}
+        {rateLimited && `API rate limited :(`}
         {loading && 'Thinking...'}
       </Description>
       {isResult() && (

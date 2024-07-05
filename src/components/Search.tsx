@@ -9,9 +9,6 @@ interface Props {
 const Container = styled.div`
   padding-top: 0.5em;
   padding-bottom: 0.5em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 100%;
 `
 
