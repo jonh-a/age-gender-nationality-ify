@@ -80,8 +80,11 @@ const Results: React.FC<Props> = ({ name, results, setResults }) => {
         ...resp?.data,
         success: true,
       }
-    } catch (e) {
-      return { success: false }
+    } catch (e: any) {
+      if (e?.response?.status === 429) return {
+        error: 'rate limited'
+      }
+      else return { success: false }
     }
   }
 
@@ -100,9 +103,9 @@ const Results: React.FC<Props> = ({ name, results, setResults }) => {
       const responses = await Promise.all(promises);
 
       if (
-        responses[0]?.success === false
-        || responses[1]?.success === false
-        || responses[2]?.success === false
+        responses[0]?.error === 'rate limited'
+        || responses[1]?.error === 'rate limited'
+        || responses[2]?.error === 'rate limited'
       ) {
         setRateLimited(true)
       } else setRateLimited(false)
@@ -178,7 +181,6 @@ const Results: React.FC<Props> = ({ name, results, setResults }) => {
         </Details>
       )}
     </Container>
-
   )
 }
 
