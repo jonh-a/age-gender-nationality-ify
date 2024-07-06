@@ -4,7 +4,10 @@ const Container = styled.div`
   color: lightgray;
   font-size: .5em;
   margin-top: auto;
-  margin-bottom: .1em;
+`
+
+const P = styled.p`
+  padding-bottom: .2em;
 `
 
 const Link = styled.a`
@@ -14,7 +17,9 @@ const Link = styled.a`
 const Disclaimer = () => {
   return (
     <Container>
-      Data sourced from <Link href="https://agify.io/">Agify</Link>, <Link href="https://genderize.io/">Genderize</Link>, and <Link href="https://nationalize.io/">Nationalize</Link>.
+      <P>
+        Data sourced from <Link href="https://agify.io/">Agify</Link>, <Link href="https://genderize.io/">Genderize</Link>, and <Link href="https://nationalize.io/">Nationalize</Link>.
+      </P>
     </Container>
   )
 }
